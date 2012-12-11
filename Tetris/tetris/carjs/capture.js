@@ -46,12 +46,14 @@ function $$arrRemove(arr, index) {
 	$.jStorage.set("ssd",GLOBAL_SSD);
 	$$counter = 0; 	//global counter for objects
 	$$rcounter = 0 ; // for randoms generated
+	$$dcounter = 0 ; // for dates generated
 	$$ssID = GLOBAL_SSD; // Session ID ...
 	logEntryArr = [];
 	logTimeOutCalls = {};
 	$.jStorage.set("UserId"+"_"+$$ssID,logEntryArr);
 	localStorage.setItem("UserId"+"_"+$$ssID, JSON.stringify(logTimeOutCalls));
 	localStorage.setItem("randoms"+"_"+$$ssID, JSON.stringify(logTimeOutCalls));
+	localStorage.setItem("dates"+"_"+$$ssID, JSON.stringify(logTimeOutCalls));
 	
 	// construct the json formation..
 	var stoutMap = {};
@@ -149,6 +151,15 @@ function $$arrRemove(arr, index) {
 		return val;
 	};
 	
+	$$oldDate = Date;
+	Date = function(){
+		var val = new $$oldDate();
+		var logEntryArr = JSON.parse(localStorage.getItem("dates"+"_"+$$ssID));
+		logEntryArr[$$dcounter++]=val;
+		localStorage.setItem("dates"+"_"+$$ssID,JSON.stringify(logEntryArr));
+		return val;		
+	}
+	Date.prototype=$$oldDate.prototype;
 	$$randCache = "";
 	$$funcCache = [];
 	$$logheader = 0;

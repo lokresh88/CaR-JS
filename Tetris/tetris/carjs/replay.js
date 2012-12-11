@@ -39,6 +39,7 @@
 	// Counters
 	$$counter = 0; // global counter for objects
 	$$rcounter = 0; // global counter for objects RAND
+	$$dcounter = 0; // global counter for objects  new Date()
 	$$mecounter = 0;
 	$$missedEvents = [];
 	$$missedEventsTol = [];
@@ -60,6 +61,14 @@
 		var val = $$randoms[$$rcounter++];
 		return val;
 	};
+	$$dates = JSON.parse(localStorage.getItem("dates" + "_" + $$ssID));
+	console.log($$dates);
+	$$oldDate = Date;
+	Date = function(){
+		var val =  $$dates[$$dcounter++];
+		return new $$oldDate(val);
+	}
+	Date.prototype=$$oldDate.prototype;
 
 	/*
 	 * if($$counter<2){ var e = jQuery.Event("click", { keyCode: event.which
